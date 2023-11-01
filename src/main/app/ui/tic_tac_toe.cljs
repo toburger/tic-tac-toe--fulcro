@@ -121,12 +121,13 @@
    :query [:board :current-player :winner]
    :initial-state (fn [_] initial-state)
    :route-segment ["tic-tac-toe"]}
-  (dom/div :.App
-           (if winner
-             (ui-game-over {:winner winner}
-                           {:onGameOver (fn [] (comp/transact! this [(restart-game {})]))})
-             (ui-game-field {:board board
-                             :current-player current-player}
-                            {:onMove (fn [coords] (comp/transact! this [(move coords)]))}))))
+  (dom/div :.Content
+           (dom/div :.App
+                    (if winner
+                      (ui-game-over {:winner winner}
+                                    {:onGameOver (fn [] (comp/transact! this [(restart-game {})]))})
+                      (ui-game-field {:board board
+                                      :current-player current-player}
+                                     {:onMove (fn [coords] (comp/transact! this [(move coords)]))})))))
 
 (def ui-tic-tac-toe (comp/factory TicTacToe))
