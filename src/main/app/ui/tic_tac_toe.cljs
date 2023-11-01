@@ -116,7 +116,7 @@
 
 (def ui-game-over (comp/computed-factory GameOver))
 
-(defsc TicTacToeField [this {:keys [board current-player winner]}]
+(defsc TicTacToe [this {:keys [board current-player winner]}]
   {:ident (fn [] [:component/id :tic-tac-toe])
    :query [:board :current-player :winner]
    :initial-state (fn [_] initial-state)
@@ -128,3 +128,5 @@
              (ui-game-field {:board board
                              :current-player current-player}
                             {:onMove (fn [coords] (comp/transact! this [(move coords)]))}))))
+
+(def ui-tic-tac-toe (comp/factory TicTacToe))
