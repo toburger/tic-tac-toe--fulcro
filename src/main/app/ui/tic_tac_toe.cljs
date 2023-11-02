@@ -6,6 +6,8 @@
             [taoensso.timbre :as log]))
 
 (def restart-image "./img/restart.png")
+(def player-x-image "./img/PlayerX.svg")
+(def player-o-image "./img/PlayerO.svg")
 
 (def initial-state
   {:board          [[nil nil nil]
@@ -33,14 +35,14 @@
   (dom/img :.PlayerX
            (merge
             {:alt "PlayerX"
-             :src "./img/PlayerX.svg"}
+             :src player-x-image}
             props)))
 
 (defn player-o [props]
   (dom/img :.PlayerO
            (merge
             {:alt "PlayerO"
-             :src "./img/PlayerO.svg"}
+             :src player-o-image}
             props)))
 
 (defn no-player []
@@ -117,6 +119,10 @@
 
 (def ui-game-over (comp/computed-factory GameOver))
 
+(defn prefetch-images []
+  (for [img [player-x-image player-o-image restart-image]]
+    (dom/link {:key img :rel "prefetch" :href img})))
+
 (defsc TicTacToe [this {:keys [board current-player winner]}]
   {:ident (fn [] [:component/id :tic-tac-toe])
    :query [:board :current-player :winner]
@@ -124,6 +130,7 @@
    :route-segment ["tic-tac-toe"]}
   (dom/div :.Content
            (dom/div :.App
+                    (prefetch-images)
                     (if winner
                       (ui-game-over {:winner winner}
                                     {:onGameOver (fn [] (comp/transact! this [(restart-game {})]))})
