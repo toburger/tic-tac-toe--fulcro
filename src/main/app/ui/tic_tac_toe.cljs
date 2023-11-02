@@ -69,7 +69,7 @@
 
 (defsc GameBoard [_ {:keys [board]} {:keys [onMove]}]
   {:query [{:board (comp/get-query GameCell)}]
-   :initial-state {}}
+   :initial-state {:board []}}
   (dom/div :.Board
            (map-indexed
             (fn [rowidx row]
