@@ -20,13 +20,14 @@
 
 (defmutation move [{:keys [x y]}]
   (action [{:keys [state ref]}]
-          (let [{:keys [board current-player]} (get-in @state ref)]
-            (let [new-board          (game-logic/update-board board x y current-player)
-                  new-winner         (game-logic/get-winner new-board)
-                  new-current-player (game-logic/switch-player current-player)]
-              (swap! state assoc-in ref {:board          new-board
-                                         :current-player new-current-player
-                                         :winner         new-winner})))))
+          (letfn [(next-state [{:keys [board current-player]}]
+                    (let [new-board          (game-logic/update-board board x y current-player)
+                          new-winner         (game-logic/get-winner new-board)
+                          new-current-player (game-logic/switch-player current-player)]
+                      {:board          new-board
+                       :current-player new-current-player
+                       :winner         new-winner}))]
+            (swap! state update-in ref next-state))))
 
 (defn player-x [props]
   (dom/img :.PlayerX
@@ -52,7 +53,7 @@
      :o (player-o {:className "PlayerO--Small"})
      (no-player))))
 
-(defsc GameCell [_ {:keys [x y cell]} {:keys [onMove]}]
+(defsc GameCell [_ {:keys [x y cell]} {:keys [onMove] :or {onMove identity}}]
   {:query [:x :y :cell]
    :ident (fn [] [::GameCell [x y]])
    :initial-state {}}
