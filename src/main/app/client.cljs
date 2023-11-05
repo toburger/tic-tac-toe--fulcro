@@ -31,6 +31,7 @@
   #_(uism/begin! SPA session/session-machine ::session/session
                  {:actor/login-form      root/Login
                   :actor/current-session root/Session})
+  (root/new-person SPA)
   (app/mount! SPA root/Root "app" {:initialize-state? false}))
 
 (comment
