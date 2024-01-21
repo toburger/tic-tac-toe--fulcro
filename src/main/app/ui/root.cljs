@@ -5,5 +5,5 @@
 
 (defsc Root [this {:root/keys [tic-tac-toe]}]
   {:query         [{:root/tic-tac-toe (comp/get-query TicTacToe)}]
-   :initial-state (fn [_] {:root/tic-tac-toe (comp/get-initial-state TicTacToe)})}
+   :initial-state {:root/tic-tac-toe {}}}
   (ui-tic-tac-toe tic-tac-toe))
